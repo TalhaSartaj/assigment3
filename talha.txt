@@ -1,0 +1,65 @@
+// Test Case for User Registration
+describe('User Registration', () => {
+  it('should register a new user', () => {
+    cy.visit('/signup'); // Assuming /signup is the registration page
+    cy.get('input[name="email"]').type('newuser@example.com');
+    cy.get('input[name="password"]').type('password123');
+    cy.get('button[type="submit"]').click();
+    cy.url().should('include', '/home'); // Assuming /home is the redirected page after registration
+  });
+});
+
+// Test Case for User Login
+describe('User Login', () => {
+  it('should log in an existing user', () => {
+    cy.visit('/login'); // Assuming /login is the login page
+    cy.get('input[name="email"]').type('existinguser@example.com');
+    cy.get('input[name="password"]').type('password123');
+    cy.get('button[type="submit"]').click();
+    cy.url().should('include', '/home'); // Assuming /home is the redirected page after login
+  });
+});
+
+// Test Case for Book Searching
+describe('Book Searching', () => {
+  it('should search for a book', () => {
+    cy.visit('/home'); // Assuming /home is the page with book searching functionality
+    cy.get('input[name="search"]').type('Cypress Testing Book');
+    cy.get('button[type="submit"]').click();
+    cy.get('.search-results').should('contain', 'Cypress Testing Book');
+  });
+});
+
+// Test Case for Adding a Book
+describe('Adding a Book', () => {
+  it('should add a new book', () => {
+    cy.visit('/admin'); // Assuming /admin is the admin page for CRUD operations
+    cy.get('button[name="add-book"]').click();
+    cy.get('input[name="title"]').type('New Book Title');
+    cy.get('input[name="author"]').type('New Book Author');
+    cy.get('button[type="submit"]').click();
+    cy.get('.success-message').should('contain', 'Book added successfully');
+  });
+});
+
+// Test Case for Editing a Book
+describe('Editing a Book', () => {
+  it('should edit an existing book', () => {
+    cy.visit('/admin'); // Assuming /admin is the admin page for CRUD operations
+    cy.get('button[name="edit-book"]').click();
+    cy.get('input[name="title"]').clear().type('Edited Book Title');
+    cy.get('button[type="submit"]').click();
+    cy.get('.success-message').should('contain', 'Book edited successfully');
+  });
+});
+
+// Test Case for Deleting a Book
+describe('Deleting a Book', () => {
+  it('should delete an existing book', () => {
+    cy.visit('/admin'); // Assuming /admin is the admin page for CRUD operations
+    cy.get('button[name="delete-book"]').click();
+    cy.get('.confirmation-dialog').should('be.visible');
+    cy.get('button[name="confirm-delete"]').click();
+    cy.get('.success-message').should('contain', 'Book deleted successfully');
+  });
+});
